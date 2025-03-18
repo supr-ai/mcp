@@ -1,14 +1,14 @@
 # Echo MCP Server
 
-A simple Model Context Protocol (MCP) server that echoes back whatever message it is sent. Perfect for testing MCP functionality and as a starting point for building more complex MCP servers.
+<img src="assets/echo-logo.png" width="256" height="256" alt="Echo Logo" />
+
+A simple Model Context Protocol (MCP) server that echoes back whatever message it is sent. Perfect for testing MCP functionality
 
 ## Features
 
 - Simple echo functionality that returns any message sent to it
 - Handles empty messages, special characters, emojis, and long messages
-- Includes comprehensive test suite
-- Minimal dependencies
-- Easy to understand and extend
+- Includes test suite
 
 ## Available Tools
 
@@ -79,15 +79,6 @@ npm test
 ```bash
 npm run build
 ```
-
-## Extending
-
-This server is designed to be simple and easy to understand. You can use it as a starting point for your own MCP servers:
-
-1. Fork or clone this repository
-2. Modify the `src/index.ts` file to add your own tools and functionality
-3. Update the tests to cover your new functionality
-4. Build and configure as described above
 
 ## License
 
