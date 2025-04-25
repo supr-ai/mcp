@@ -1,99 +1,136 @@
 #!/usr/bin/env node
 
-/**
- * A simple MCP echo server that repeats back whatever it is prompted for testing.
- * It implements a single tool that echoes back the input message.
- */
-
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import {Server} from "@modelcontextprotocol/sdk/server/index.js";
+import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
+    CallToolRequestSchema,
+    ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+import fetch from "node-fetch";
 
-/**
- * Create an MCP server with capabilities for tools (to echo messages).
- */
 const server = new Server(
-  {
-    name: "echo-server",
-    version: "0.1.0",
-  },
-  {
-    capabilities: {
-      tools: {},
+    {
+        name: "supai-mcp-server",
+        version: "0.1.0",
     },
-  }
+    {
+        capabilities: {
+            tools: {},
+        },
+    }
 );
 
-/**
- * Handler that lists available tools.
- * Exposes a single "echo" tool that echoes back the input message.
- */
 server.setRequestHandler(ListToolsRequestSchema, async () => {
-  return {
-    tools: [
-      {
-        name: "echo",
-        description: "Echoes back the input message",
-        inputSchema: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-              description: "The message to echo back"
+    return {
+        tools: [
+            {
+                name: "create-article",
+                description: "Generate a new article in sup.ai",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        topic: {
+                            type: "string",
+                            description: "The topic of the article to create"
+                        }
+                    },
+                    required: ["topic"]
+                }
+            },
+            {
+                name: "update-article",
+                description: "Update an article in sup.ai",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        slug: {
+                            type: "string",
+                            description: "The slug of the article to update"
+                        }
+                    },
+                    required: ["slug"]
+                }
             }
-          },
-          required: ["message"]
-        }
-      }
-    ]
-  };
+        ]
+    };
 });
 
-/**
- * Handler for the echo tool.
- * Simply returns the input message.
- */
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  switch (request.params.name) {
-    case "echo": {
-      const message = String(request.params.arguments?.message || "");
-      
-      if (!message) {
-        return {
-          content: [{
-            type: "text",
-            text: "You didn't provide a message to echo!"
-          }]
-        };
-      }
+    console.log(process.env);
+    switch (request.params.name) {
+        case "update-article": {
+            const slug = request.params.arguments?.slug
+            const response = await fetch(`${process.env.SUPAI_ENDPOINT}/api/articles/update`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${process.env.SUPAI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    slug: slug
+                })
+            });
 
-      return {
-        content: [{
-          type: "text",
-          text: message
-        }]
-      };
+            if (!response.ok) {
+                throw new Error(`Failed to update article: ${response.statusText}`);
+            }
+            const result = await response.json() as ArticleUpdateResult;
+
+            return {
+                content: [{
+                    type: "text",
+                    text: `Article updated ${process.env.SUPAI_ENDPOINT}/articles/${result.category}/${result.slug}`
+                }]
+            };
+        }
+        case "create-article": {
+            const response = await fetch(`${process.env.SUPAI_ENDPOINT}/api/articles`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${process.env.SUPAI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    topic: request.params.arguments?.topic
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to create article: ${response.statusText}`);
+            }
+
+            const result = await response.json() as ArticleCreationResult;
+
+            return {
+                content: [{
+                    type: "text",
+                    text: `Article created ${process.env.SUPAI_ENDPOINT}/articles/${result.category}/${result.article}`
+                }]
+            };
+        }
+        default:
+            throw new Error("Unknown tool");
     }
-
-    default:
-      throw new Error("Unknown tool");
-  }
 });
+interface ArticleUpdateResult {
+    category: string
+    slug: string
+    bodies: BodyUpdateResult[]
+}
 
-/**
- * Start the server using stdio transport.
- * This allows the server to communicate via standard input/output streams.
- */
+interface BodyUpdateResult {}
+
+interface ArticleCreationResult {
+    category: string
+    article: string
+}
 async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error("Echo MCP server running on stdio");
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    console.error("Echo MCP server running on stdio");
 }
 
 main().catch((error) => {
-  console.error("Server error:", error);
-  process.exit(1);
+    console.error("Server error:", error);
+    process.exit(1);
 });

@@ -1,8 +1,6 @@
-# Echo MCP Server
+# sup.ai MCP Server
 
-<img src="assets/echo-logo.png" width="256" height="256" alt="Echo Logo" />
-
-A simple Model Context Protocol (MCP) server that echoes back whatever message it is sent. Perfect for testing MCP functionality
+A simple Model Context Protocol (MCP) server for article administration.
 
 ## Features
 
@@ -12,30 +10,29 @@ A simple Model Context Protocol (MCP) server that echoes back whatever message i
 
 ## Available Tools
 
-- `echo`: Takes a message parameter and echoes it back exactly as received
+- `create-article`: Takes a topic parameter and creates an article
+- `update-article`: Takes a slug parameter and updates an article
 
 ## Installation
 
 ```bash
-git clone https://github.com/Garoth/echo-mcp.git
-cd echo-mcp
+git clone git@github.com:supr-ai/mcp.git
+cd mcp
 npm install
+npm build
 ```
 
 ## Configuration
 
-Add the echo server to your Cline MCP settings file inside VSCode's settings (ex. ~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json):
+Add this into your chat client mcp server configuration.  
 
 ```json
 {
   "mcpServers": {
-    "echo-server": {
+    "supai": {
       "command": "node",
-      "args": ["/path/to/echo-server/build/index.js"],
-      "disabled": false,
-      "autoApprove": [
-        "echo"
-      ]
+      "args": ["/path/to/supai/mcp/build/index.js"],
+      "disabled": false
     }
   }
 }
@@ -43,43 +40,49 @@ Add the echo server to your Cline MCP settings file inside VSCode's settings (ex
 
 ## Usage Examples
 
-### Basic Echo
+### Create Article
+![create-article.png](images/create-article.png)
 
-```
-Input: "Hello, world!"
-Output: "Hello, world!"
-```
+### Update Article
+![update-article.png](images/update-article.png)
 
-### Special Characters
+## Usage Examples With Google Search Console MCP
 
-```
-Input: "Special chars: !@#$%^&*()_+{}[]|\\:;\"'<>,.?/"
-Output: "Special chars: !@#$%^&*()_+{}[]|\\:;\"'<>,.?/"
-```
+Add the configuration for the GSC MCP. 
 
-### Emojis
-
-```
-Input: "Message with emojis: 😀 🚀 🌈 🎉"
-Output: "Message with emojis: 😀 🚀 🌈 🎉"
-```
-
-## Development
-
-### Running Tests
-
-The tests verify the echo functionality works correctly with various types of input:
-
-```bash
-npm test
-```
-
-### Building
-
-```bash
-npm run build
+```json
+{
+  "mcpServers": {
+    "supai": {
+      "command": "node",
+      "args": ["/path/to/supai/mcp/build/index.js"],
+      "disabled": false
+    }
+  },
+  "gsc": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "mcp-server-gsc"
+    ],
+    "env": {
+      "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/google-search-console-mcp.json"
+    }
+  }
+}
 ```
 
-## License
+### Update Article With Clicks (not tested yet)
 
-MIT
+```
+you:  Get all urls with more than 0 clicks and write to file urls-with-clicks.txt
+
+ai:  Found 10 urls, created urls-with-clicks.txt
+
+you: Update article for each url in urls-with-clicks.txt
+
+ai:  10 articles updated
+
+
+
+```
