@@ -4,7 +4,6 @@ A simple Model Context Protocol (MCP) server for article administration.
 
 ## Features
 
-- Simple echo functionality that returns any message sent to it
 - Handles empty messages, special characters, emojis, and long messages
 - Includes test suite
 
