@@ -31,7 +31,11 @@ Add this into your chat client mcp server configuration.
     "supai": {
       "command": "node",
       "args": ["/path/to/supai/mcp/build/index.js"],
-      "disabled": false
+      "disabled": false,
+      "env": {
+        "SUPAI_API_KEY": "****",
+        "SUPAI_ENDPOINT": "https://sup.ai"
+      }
     }
   }
 }
