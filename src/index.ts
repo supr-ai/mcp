@@ -127,7 +127,7 @@ interface ArticleCreationResult {
 async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.error("Echo MCP server running on stdio");
+    console.error("sup.ai MCP server running on stdio");
 }
 
 main().catch((error) => {
