@@ -56,7 +56,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 });
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-    console.log(process.env);
     switch (request.params.name) {
         case "update-article": {
             const slug = request.params.arguments?.slug
@@ -112,6 +111,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             throw new Error("Unknown tool");
     }
 });
+
 interface ArticleUpdateResult {
     category: string
     slug: string
