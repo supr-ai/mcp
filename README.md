@@ -1,29 +1,44 @@
 # sup.ai MCP Server
 
-A simple Model Context Protocol (MCP) server for article administration.
+A powerful Model Context Protocol (MCP) server for efficient article administration and management.
+
+## Overview
+
+The sup.ai MCP server provides a seamless interface for creating and updating articles through a chat-based interface. It integrates with various tools and services to enhance content management workflows.
 
 ## Features
 
-- Handles empty messages, special characters, emojis, and long messages
-- Includes test suite
+- Robust message handling (empty messages, special characters, emojis, and long messages)
+- Comprehensive test suite for reliability
+- Simple integration with chat clients
+- Support for Google Search Console integration
 
 ## Available Tools
 
-- `create-article`: Takes a topic parameter and creates an article
-- `update-article`: Takes a slug parameter and updates an article
+| Tool | Description |
+|------|-------------|
+| `create-article` | Creates a new article based on a specified topic |
+| `update-article` | Updates an existing article identified by its slug |
 
 ## Installation
 
 ```bash
+# Clone the repository
 git clone git@github.com:supr-ai/mcp.git
+
+# Navigate to the project directory
 cd mcp
+
+# Install dependencies
 npm install
+
+# Build the project
 npm build
 ```
 
 ## Configuration
 
-Add this into your chat client mcp server configuration.  
+Add the following configuration to your chat client MCP server settings:
 
 ```json
 {
@@ -44,14 +59,18 @@ Add this into your chat client mcp server configuration.
 ## Usage Examples
 
 ### Create Article
-![create-article.png](images/create-article.png)
+This example demonstrates how to create a new article using the MCP server:
+
+![Creating a new article](images/create-article.png)
 
 ### Update Article
-![update-article.png](images/update-article.png)
+This example shows how to update an existing article:
 
-## Usage Examples With Google Search Console MCP
+![Updating an existing article](images/update-article.png)
 
-Add the configuration for the GSC MCP. 
+## Integration with Google Search Console
+
+You can enhance your workflow by integrating with Google Search Console MCP. Add the following configuration:
 
 ```json
 {
@@ -60,22 +79,24 @@ Add the configuration for the GSC MCP.
       "command": "node",
       "args": ["/path/to/supai/mcp/build/index.js"],
       "disabled": false
-    }
-  },
-  "gsc": {
-    "command": "npx",
-    "args": [
-      "-y",
-      "mcp-server-gsc"
-    ],
-    "env": {
-      "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/google-search-console-mcp.json"
+    },
+    "gsc": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-server-gsc"
+      ],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/google-search-console-mcp.json"
+      }
     }
   }
 }
 ```
 
-### Update Article With Clicks (not tested yet)
+### Bulk Update Articles Based on Traffic
+
+Example workflow for updating articles based on traffic data:
 
 ```
 you:  Get all urls with more than 0 clicks and write to file urls-with-clicks.txt
@@ -85,7 +106,4 @@ ai:  Found 10 urls, created urls-with-clicks.txt
 you: Update article for each url in urls-with-clicks.txt
 
 ai:  10 articles updated
-
-
-
 ```
