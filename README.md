@@ -61,12 +61,24 @@ Add the following configuration to your chat client MCP server settings:
 ### Create Article
 This example demonstrates how to create a new article using the MCP server:
 
-![Creating a new article](images/create-article.png)
+```
+you: @supai create-article topic="Best practices for SEO optimization"
+
+ai: Creating article on "Best practices for SEO optimization"...
+   Article created successfully!
+   URL: https://sup.ai/articles/best-practices-for-seo-optimization
+```
 
 ### Update Article
 This example shows how to update an existing article:
 
-![Updating an existing article](images/update-article.png)
+```
+you: @supai update-article slug="best-practices-for-seo-optimization" 
+
+ai: Updating article "best-practices-for-seo-optimization"...
+   Article updated successfully!
+   URL: https://sup.ai/articles/best-practices-for-seo-optimization
+```
 
 ## Integration with Google Search Console
 
