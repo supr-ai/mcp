@@ -110,8 +110,3 @@ Great! The file `recent_clicks.csv` has been created in `/home/jp/supai/mcp-work
 
 Is there anything else I can help you with?
 
-## Step 9: User Request (ID: 10)
-
-```
-convert the conversation history to markdown and write it to export_clicks.md
-```
