@@ -95,7 +95,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to create article: ${response.statusText}`);
+                throw new Error(`Failed to create article: ${await response.text()}`);
             }
 
             const result = await response.json() as ArticleCreationResult;
