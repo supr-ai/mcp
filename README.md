@@ -106,16 +106,3 @@ You can enhance your workflow by integrating with Google Search Console MCP. Add
 }
 ```
 
-### Bulk Update Articles Based on Traffic
-
-Example workflow for updating articles based on traffic data:
-
-```
-you:  Get all urls with more than 0 clicks and write to file urls-with-clicks.txt
-
-ai:  Found 10 urls, created urls-with-clicks.txt
-
-you: Update article for each url in urls-with-clicks.txt
-
-ai:  10 articles updated
-```
