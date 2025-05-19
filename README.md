@@ -18,6 +18,9 @@ The sup.ai MCP server provides a seamless interface for creating and updating ar
 ### 1. Clone, install, and build sup.ai mcp project
 
 ```bash
+mkdir supai
+cd supai
+mkdir work
 git clone git@github.com:supr-ai/mcp.git
 cd mcp
 npm install
