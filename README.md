@@ -19,7 +19,7 @@ The sup.ai MCP server provides a seamless interface for creating and updating ar
 
 #### Windsurf
 - Use the built-in MCP integration. Add your MCP server as a new provider using its settings/preferences interface.
-
+https://windsurf.com/editor/download-mac
 #### node & npm
 
 ##### via homebrew for mac
@@ -33,7 +33,7 @@ brew install node
 ```bash
 mkdir supai
 cd supai
-mkdir work
+git clone git@github.com:supr-ai/work.git
 git clone git@github.com:supr-ai/mcp.git
 cd mcp
 npm install
@@ -54,6 +54,16 @@ Add the following configuration to your chat client MCP server settings:
       "env": {
         "SUPAI_API_KEY": "****",
         "SUPAI_ENDPOINT": "https://sup.ai"
+      }
+    },
+    "gsc": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-server-gsc"
+      ],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/google-search-console-mcp.json"
       }
     }
   }
@@ -84,29 +94,4 @@ ai: Updating article "best-practices-for-seo-optimization"...
    URL: https://sup.ai/articles/best-practices-for-seo-optimization
 ```
 
-## Integration with Google Search Console
-
-You can enhance your workflow by integrating with Google Search Console MCP. Add the following configuration:
-
-```json
-{
-  "mcpServers": {
-    "supai": {
-      "command": "node",
-      "args": ["/path/to/supai/mcp/build/index.js"],
-      "disabled": false
-    },
-    "gsc": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-server-gsc"
-      ],
-      "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/google-search-console-mcp.json"
-      }
-    }
-  }
-}
-```
 
