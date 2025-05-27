@@ -60,6 +60,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                         slug: {
                             type: "string",
                             description: "The slug of the article to update"
+                        },
+                        generateNewImage: {
+                            type: "boolean",
+                            description: "Whether to generate a new image for the article"
                         }
                     },
                     required: ["slug"]
@@ -80,7 +84,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    slug: slug
+                    slug: slug,
+                    generateNewImage: request.params.arguments?.generateNewImage ?? false
                 })
             });
 
