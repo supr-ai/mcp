@@ -38,6 +38,20 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                 }
             },
             {
+                name: "delete-article",
+                description: "Delete an article in sup.ai",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        topic: {
+                            type: "string",
+                            description: "The slug of the article to delete"
+                        }
+                    },
+                    required: ["slug"]
+                }
+            },
+            {
                 name: "update-article",
                 description: "Update an article in sup.ai",
                 inputSchema: {
@@ -79,6 +93,28 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 content: [{
                     type: "text",
                     text: `Article updated ${process.env.SUPAI_ENDPOINT}/articles/${result.category}/${result.slug}`
+                }]
+            };
+        }
+        case "delete-article": {
+            const slug = request.params.arguments?.slug
+            const response = await fetch(`${process.env.SUPAI_ENDPOINT}/api/articles?slug=${slug}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${process.env.SUPAI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to delete article: ${await response.text()}`);
+            }
+            const result = await response.json() as ArticleUpdateResult;
+
+            return {
+                content: [{
+                    type: "text",
+                    text: `Article deleted ${slug}`
                 }]
             };
         }
