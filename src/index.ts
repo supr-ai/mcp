@@ -103,7 +103,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
         case "delete-article": {
             const slug = request.params.arguments?.slug
-            const response = await fetch(`${process.env.SUPAI_ENDPOINT}/api/articles?slug=${slug}`, {
+            const response = await fetch(`${process.env.SUPAI_ENDPOINT}/api/articles/${slug}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${process.env.SUPAI_API_KEY}`,
@@ -114,7 +114,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             if (!response.ok) {
                 throw new Error(`Failed to delete article: ${await response.text()}`);
             }
-            const result = await response.json() as ArticleUpdateResult;
 
             return {
                 content: [{
@@ -159,12 +158,14 @@ interface ArticleUpdateResult {
     bodies: BodyUpdateResult[]
 }
 
-interface BodyUpdateResult {}
+interface BodyUpdateResult {
+}
 
 interface ArticleCreationResult {
     category: string
     article: string
 }
+
 async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
